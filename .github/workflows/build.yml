@@ -1,75 +1,55 @@
 name: Build Android APK
 
-# Χτίζει αυτόματα ένα Android APK στο cloud της GitHub.
-# Κατεβάζεις μόνο το ~50MB APK — όχι 2GB toolchain.
-#
-# Τρέχει: (1) σε κάθε push στο main, (2) χειροκίνητα από το tab "Actions".
-
 on:
   push:
     branches: [main]
-  workflow_dispatch: {} # κουμπί "Run workflow" στο GitHub UI
+  workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 40
-
     steps:
-      - name: Checkout κώδικα
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 1) Node — για να εγκαταστήσει τα JS dependencies + να τρέξει τα tests
       - name: Setup Node 18
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
 
-      # 2) JDK 17 — απαιτείται από το Android Gradle build
       - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      # 3) Android SDK — ο runner το κατεβάζει, ΟΧΙ εσύ
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # 4) Εγκατάσταση JS dependencies
-      - name: npm install
+      - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      # 5) Layer 1 — επαλήθευση της μηχανής mesh (πρέπει 6/6)
       - name: Verify mesh engine
         run: npm run verify
 
-      # 6) Layer 2 — TypeScript type-check
       - name: TypeScript check
         run: npm run tsc
 
-      # 7) Άδειες εκτέλεσης στο gradlew
-      - name: Make gradlew executable
-        run: chmod +x android/gradlew || true
-
-      # 7b) Σιγουρέψου ότι υπάρχει το Gradle wrapper JAR (αν λείπει, φτιάξ' το)
-     - name: Ensure Gradle wrapper
+      - name: Ensure Gradle wrapper
         working-directory: android
         run: |
           if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-            echo "Wrapper JAR missing — downloading Gradle 8.6…"
             curl -L -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.6-bin.zip
             unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
             /tmp/gradle-dist/gradle-8.6/bin/gradle wrapper --gradle-version 8.6
           fi
 
-      # 8) Χτίσιμο του debug APK
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon --stacktrace
 
-      # 9) Ανέβασμα του APK ως artifact — από εδώ το κατεβάζεις
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
