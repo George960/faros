@@ -54,12 +54,14 @@ jobs:
         run: chmod +x android/gradlew || true
 
       # 7b) Σιγουρέψου ότι υπάρχει το Gradle wrapper JAR (αν λείπει, φτιάξ' το)
-      - name: Ensure Gradle wrapper
+     - name: Ensure Gradle wrapper
         working-directory: android
         run: |
           if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-            echo "Wrapper JAR missing — generating with system Gradle…"
-            gradle wrapper --gradle-version 8.6
+            echo "Wrapper JAR missing — downloading Gradle 8.6…"
+            curl -L -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.6-bin.zip
+            unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
+            /tmp/gradle-dist/gradle-8.6/bin/gradle wrapper --gradle-version 8.6
           fi
 
       # 8) Χτίσιμο του debug APK
