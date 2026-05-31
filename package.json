@@ -1,0 +1,39 @@
+{
+  "name": "faros",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ΦΑΡΟΣ — offline Bluetooth mesh chat. No internet, no servers, end-to-end encrypted.",
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "pods": "cd ios && pod install && cd ..",
+    "lint": "eslint . --ext .ts,.tsx",
+    "tsc": "tsc --noEmit",
+    "verify": "node verify-engine.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-community/geolocation": "^3.2.1",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-ble-plx": "^3.2.1",
+    "react-native-get-random-values": "^1.11.0",
+    "react-native-svg": "^15.2.0",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@react-native/babel-preset": "0.74.85",
+    "@react-native/eslint-config": "0.74.85",
+    "@react-native/metro-config": "0.74.85",
+    "@react-native/typescript-config": "0.74.85",
+    "@types/react": "^18.2.6",
+    "typescript": "5.0.4"
+  },
+  "engines": { "node": ">=18" }
+}

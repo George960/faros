@@ -1,0 +1,10 @@
+<!-- Add to ios/Faros/Info.plist -->
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>Το ΦΑΡΟΣ χρησιμοποιεί Bluetooth για να συνδέεται με κοντινές συσκευές χωρίς ίντερνετ.</string>
+<key>NSBluetoothPeripheralUsageDescription</key>
+<string>Το ΦΑΡΟΣ εκπέμπει μέσω Bluetooth για να σχηματίσει mesh δίκτυο.</string>
+<key>UIBackgroundModes</key>
+<array>
+  <string>bluetooth-central</string>
+  <string>bluetooth-peripheral</string>
+</array>

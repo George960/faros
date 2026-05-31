@@ -1,0 +1,17 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '13.4'
+prepare_react_native_project!
+
+target 'Faros' do
+  config = use_native_modules!
+  use_react_native!(
+    :path => '../node_modules/react-native',
+    :hermes_enabled => true,
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+  post_install do |installer|
+    react_native_post_install(installer, '../node_modules/react-native', :mac_catalyst_enabled => false)
+  end
+end
