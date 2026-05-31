@@ -113,7 +113,7 @@ class FarosBleModule(private val ctx: ReactApplicationContext) :
         if (char == null) {
             promise.resolve(null); return
         }
-        char.value = bytes
+        char.setValue(bytes)
         subscribers.forEach { device ->
             gattServer?.notifyCharacteristicChanged(device, char, false)
         }
