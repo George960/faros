@@ -15,11 +15,11 @@ class MainApplication : Application(), ReactApplication {
 
     override val reactNativeHost: ReactNativeHost =
         object : DefaultReactNativeHost(this) {
-            override fun getPackages(): List<ReactPackage> =
-                PackageList(this).packages.apply {
-                    // Register the custom BLE peripheral module
-                    add(FarosBlePackage())
-                }
+            override fun getPackages(): List<ReactPackage> {
+                val packages = PackageList(this).packages.toMutableList()
+                packages.add(FarosBlePackage())
+                return packages
+            }
 
             override fun getJSMainModuleName(): String = "index"
             override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG
